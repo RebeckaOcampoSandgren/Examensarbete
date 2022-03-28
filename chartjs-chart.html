@@ -10,6 +10,23 @@
 </head>
 
 <body>
+    <div id="filterChart">
+        <input type="checkbox" class="methodCheckbox" id="methodPOST" name="methodPOST" value="post">
+        <label for="methodPOST"> POST</label>
+        <input type="checkbox" class="methodCheckbox" id="methodPATCH" name="methodPATCH" value="patch">
+        <label for="methodPATCH"> PATCH</label>
+        <input type="checkbox" class="methodCheckbox" id="methodGET" name="methodGET" value="get">
+        <label for="methodGET">GET</label>
+        <input type="checkbox" class="methodCheckbox" id="methodHEAD" name="methodHEAD" value="head">
+        <label for="methodHEAD"> HEAD</label>
+        <input type="checkbox" class="methodCheckbox" id="methodDELETE" name="methodDELETE" value="delete">
+        <label for="methodDELETE"> DELETE</label>
+        <input type="checkbox" class="methodCheckbox" id="methodPUT" name="methodPUT" value="put">
+        <label for="methodPUT"> PUT</label>
+        <div>
+            <button onclick="updateChart()">Filtrera</button>
+        </div>
+    </div>
     <div>
         <canvas id="barChart" width="200" height="200"></canvas>
     </div>
