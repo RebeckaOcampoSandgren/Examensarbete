@@ -1,7 +1,8 @@
 let ctx = document.getElementById('doughnutChart').getContext('2d');
 let statusArr = [/^1/, /^2/, /^3/, /^4/, /^5/];
-let statusLabel = ["Informational", "Successful", "Redirection", "Client Error", "Server Error"];
+let statusLabel = ["Informational", "Successful", "Redirectional", "Client Error", "Server Error"];
 const counts = {};
+let chart;
 
 $.getJSON("logfile1.json", function (json) {
     //Generate array with https methods from log file
@@ -39,6 +40,7 @@ $.getJSON("logfile1.json", function (json) {
     };
 
     var options = {
+        maintainAspectRatio: false,
         plugins: {
             title: {
                 display: true,
@@ -47,12 +49,32 @@ $.getJSON("logfile1.json", function (json) {
         }
     };
 
-    new Chart(ctx, {
+    chart = new Chart(ctx, {
         type: 'doughnut',
         options: options,
         data: data
     });
 
 });
+
+//Get input from checkboxes and update chart with chosen status
+function updateChart() {
+    let selectedStatus = {};
+    let checkboxValues = [];
+    let checkboxes = document.getElementsByClassName('statusCheckbox');
+
+    for (let checkbox of checkboxes) {
+        if (checkbox.checked) {
+            selectedStatus[checkbox.value] = counts[checkbox.value];
+        }
+    }
+
+
+    console.log(selectedStatus);
+
+    chart.data.labels = Object.keys(selectedStatus);
+    chart.data.datasets[0].data = Object.values(selectedStatus);
+    chart.update();
+}
 
 
