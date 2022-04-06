@@ -1,6 +1,11 @@
 var data = {};
 let statusArr = [/^1/, /^2/, /^3/, /^4/, /^5/];
 let statusLabel = ["Informational", "Successful", "Redirectional", "Client Error", "Server Error"];
+let counts = {};
+let svg, color, pie;
+const width = 550;
+const height = 550;
+const radius = Math.min(width, height) / 2.5
 
 d3.json("logfile1.json")
     .then(function (jsondata) {
@@ -20,17 +25,12 @@ d3.json("logfile1.json")
             }
         }
 
-        //Define width, height and radius 
-        const width = 550,
-            height = 550,
-            radius = Math.min(width, height) / 2.5
-
         //Setting color scale
-        const color = d3.scaleOrdinal()
+        color = d3.scaleOrdinal()
             .range(['rgb(252, 204, 109)', 'rgb(187, 230, 124)', 'rgb(115, 209, 168)', 'rgb(149, 166, 222)', 'rgb(250, 125, 239)'])
 
         //Append svg to the div with id #myChart
-        let svg = d3.select("#myChart")
+        svg = d3.select("#myChart")
             .append("svg")
             .attr("width", width)
             .attr("height", height)
@@ -38,7 +38,7 @@ d3.json("logfile1.json")
             .attr("transform", `translate(${width / 2},${height / 2})`);
 
         //calculate position of each group on the donut chart
-        let pie = d3.pie().value(d => d[1])
+        pie = d3.pie().value(d => d[1])
         let data_ready = pie(Object.entries(data))
 
         //Build the chart
@@ -54,7 +54,7 @@ d3.json("logfile1.json")
 
         //Append svg to div with id #myLegend
         var svgLegend = d3.select("#myLegend").append("svg")
-            .attr("width", 550)
+            .attr("width", 600)
             .attr("height", 25)
 
         var dataL = 0;
@@ -98,5 +98,25 @@ d3.json("logfile1.json")
 
     });
 
+//Update chart when filter button is pressed
+function updateChart() {
+    let selectedStatus = {};
+    let checkboxes = document.getElementsByClassName('statusCheckbox');
 
+    for (let checkbox of checkboxes) {
+        if (checkbox.checked) {
+            selectedStatus[checkbox.value] = data[checkbox.value];
+        }
+    }
+
+    svg
+        .selectAll('all')
+        .data(pie(Object.entries(selectedStatus)))
+        .join('path')
+        .attr('d', d3.arc()
+            .innerRadius(90)
+            .outerRadius(radius)
+        )
+        .attr('fill', d => color(d.data[0]))
+}
 
