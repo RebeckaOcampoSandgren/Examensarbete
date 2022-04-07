@@ -27,7 +27,7 @@ d3.json("logfile1.json")
 
         //Setting color scale
         color = d3.scaleOrdinal()
-            .range(['rgb(252, 204, 109)', 'rgb(187, 230, 124)', 'rgb(115, 209, 168)', 'rgb(149, 166, 222)', 'rgb(250, 125, 239)'])
+            .range(['blue', 'red', 'orange', 'green', 'purple',])
 
         //Append svg to the div with id #myChart
         svg = d3.select("#myChart")
@@ -138,7 +138,6 @@ function updateChart() {
             return "translate(" + label.centroid(d) + ")";
         })
         .text(function (d) { return d.data[1] })
-
 
 }
 
