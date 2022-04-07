@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Google Charts doughnut chart</title>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+    </style>
+</head>
+
+<body>
+    <div id="filterChart">
+        <input type="checkbox" class="statusCheckbox" id="statusInfo" name="statusInfo" value="Informational">
+        <label for="statusInfo"> Informational</label>
+        <input type="checkbox" class="statusCheckbox" id="statusSuccess" name="statusSuccess" value="Successful">
+        <label for="statusSuccess"> Successful</label>
+        <input type="checkbox" class="statusCheckbox" id="statusRedirect" name="statusRedirect" value="Redirectional">
+        <label for="statusRedirect">Redirectional</label>
+        <input type="checkbox" class="statusCheckbox" id="statusClient" name="statusClient" value="Client Error">
+        <label for="statusClient"> Client Error</label>
+        <input type="checkbox" class="statusCheckbox" id="statusServer" name="statusServer" value="Server Error">
+        <label for="statusServer"> Server Error</label>
+        <div>
+            <button onclick="updateChart()">Filter</button>
+        </div>
+        <div id="donutchart"></div>
+    </div>
+    <script type="text/javascript" src="googlecharts-doughnutchart.js"></script>
+</body>
+
+</html>
