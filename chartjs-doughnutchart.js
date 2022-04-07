@@ -28,11 +28,11 @@ $.getJSON("logfile1.json", function (json) {
             {
                 data: Object.values(counts),
                 backgroundColor: [
-                    'rgb(252, 204, 109)',
-                    'rgb(187, 230, 124)',
-                    'rgb(115, 209, 168)',
-                    'rgb(149, 166, 222)',
-                    'rgb(250, 125, 239)',
+                    'blue',
+                    'red',
+                    'orange',
+                    'green',
+                    'purple',
                 ]
             }
         ]
@@ -46,6 +46,9 @@ $.getJSON("logfile1.json", function (json) {
                 display: true,
                 text: 'HTTP Status Distribution'
             }
+        },
+        animation: {
+            duration: 0
         }
     };
 
@@ -68,9 +71,6 @@ function updateChart() {
             selectedStatus[checkbox.value] = counts[checkbox.value];
         }
     }
-
-
-    console.log(selectedStatus);
 
     chart.data.labels = Object.keys(selectedStatus);
     chart.data.datasets[0].data = Object.values(selectedStatus);
