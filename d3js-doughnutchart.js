@@ -2,7 +2,7 @@ var data = {};
 let statusArr = [/^1/, /^2/, /^3/, /^4/, /^5/];
 let statusLabel = ["Informational", "Successful", "Redirectional", "Client Error", "Server Error"];
 let counts = {};
-let svg, color, pie;
+let svg, color, pie, arc, path, label;
 const width = 550;
 const height = 550;
 const radius = Math.min(width, height) / 2.5
@@ -39,18 +39,32 @@ d3.json("logfile1.json")
 
         //calculate position of each group on the donut chart
         pie = d3.pie().value(d => d[1])
+
         let data_ready = pie(Object.entries(data))
 
-        //Build the chart
-        svg
-            .selectAll('all')
+        //Build the donut chart
+        arc = svg.selectAll('arc')
             .data(data_ready)
-            .join('path')
-            .attr('d', d3.arc()
-                .innerRadius(90)
-                .outerRadius(radius)
-            )
+            .enter()
+
+        path = d3.arc()
+            .outerRadius(radius)
+            .innerRadius(90)
+
+        arc.append('path')
+            .attr('d', path)
             .attr('fill', d => color(d.data[0]))
+
+        //Add labels to the chart that shows value
+        label = d3.arc()
+            .outerRadius(radius)
+            .innerRadius(radius - 80);
+
+        arc.append("text")
+            .attr("transform", function (d) {
+                return "translate(" + label.centroid(d) + ")";
+            })
+            .text(function (d) { return d.data[1] })
 
         //Append svg to div with id #myLegend
         var svgLegend = d3.select("#myLegend").append("svg")
@@ -109,14 +123,22 @@ function updateChart() {
         }
     }
 
-    svg
-        .selectAll('all')
+    //Rebuild the donut chart
+    arc = svg.selectAll('arc')
         .data(pie(Object.entries(selectedStatus)))
-        .join('path')
-        .attr('d', d3.arc()
-            .innerRadius(90)
-            .outerRadius(radius)
-        )
+        .enter()
+
+    arc.append('path')
+        .attr('d', path)
         .attr('fill', d => color(d.data[0]))
+    //Add labels to the chart that shows value
+
+    arc.append("text")
+        .attr("transform", function (d) {
+            return "translate(" + label.centroid(d) + ")";
+        })
+        .text(function (d) { return d.data[1] })
+
+
 }
 
