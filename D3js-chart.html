@@ -6,19 +6,16 @@
     <meta charset="utf-8">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.3.0/d3.min.js" integrity="sha512-NMhzM2RHzbCRO0s5VPaRC+2bW6nmNXimzC9p5sp2x19M+zzuSJ2T50dEQ7hpHkNjnX1mt8nQg1NNthwRZgsoIg=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <style>
         div.svg-style {
             text-align: center;
-        }
-
-        body {
-            font-family: Roboto;
         }
     </style>
 </head>
 
 <body>
+    <button id="render">Render Chart</button>
     <div id="filterChart">
         <input type="checkbox" class="statusCheckbox" id="statusInfo" name="statusInfo" value="Informational">
         <label for="statusInfo"> Informational</label>

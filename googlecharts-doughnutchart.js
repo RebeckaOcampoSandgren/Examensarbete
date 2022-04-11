@@ -13,10 +13,12 @@ let options = {
     legend: { position: 'top' },
 };
 
-// Load the Visualization API and the piechart package.
-google.charts.load("current", { packages: ["corechart"] });
-// Set a callback to run when the Google Visualization API is loaded.
-google.charts.setOnLoadCallback(drawChart());
+//Set a callback to run when user clicks on render button
+$(document).on("click", "#render", function () {
+    // Load the Visualization API and the piechart package.
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart());
+});
 
 
 function drawChart() {
