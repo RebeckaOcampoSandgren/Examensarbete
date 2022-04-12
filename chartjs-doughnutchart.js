@@ -49,12 +49,6 @@ $(document).on("click", "#render", function () {
 
     var options = {
         maintainAspectRatio: false,
-        plugins: {
-            title: {
-                display: true,
-                text: 'HTTP Status Distribution'
-            }
-        },
         animation: {
             duration: 0
         }

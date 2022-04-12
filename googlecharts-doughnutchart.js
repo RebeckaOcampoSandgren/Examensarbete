@@ -8,8 +8,8 @@ let options = {
     title: 'HTTP Status Distribution',
     'width': 1300,
     'height': 600,
+    pieSliceText: "none",
     pieHole: 0.4,
-    pieSliceText: 'value',
     legend: { position: 'top' },
 };
 

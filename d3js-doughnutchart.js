@@ -1,8 +1,7 @@
-var data = {};
 let statusArr = [/^1/, /^2/, /^3/, /^4/, /^5/];
 let statusLabel = ["Informational", "Successful", "Redirectional", "Client Error", "Server Error"];
 let counts = {};
-let svg, color, pie, arc, path, label;
+let svg, color, pie, arc, path;
 const width = 550;
 const height = 550;
 const radius = Math.min(width, height) / 2.5;
@@ -62,17 +61,6 @@ $(document).on("click", "#render", function () {
         .attr('d', path)
         .attr('fill', d => color(d.data[0]))
 
-    //Add labels to the chart that shows value
-    label = d3.arc()
-        .outerRadius(radius)
-        .innerRadius(radius - 80);
-
-    arc.append("text")
-        .attr("transform", function (d) {
-            return "translate(" + label.centroid(d) + ")";
-        })
-        .text(function (d) { return d.data[1] })
-
     //Append svg to div with id #myLegend
     var svgLegend = d3.select("#myLegend").append("svg")
         .attr("width", 600)
@@ -106,6 +94,7 @@ $(document).on("click", "#render", function () {
         .style("fill", function (d, i) {
             return color(i)
         })
+
     //Text for the legend
     legend.append('text')
         .attr("x", 25)
@@ -126,7 +115,7 @@ function updateChart() {
 
     for (let checkbox of checkboxes) {
         if (checkbox.checked) {
-            selectedStatus[checkbox.value] = data[checkbox.value];
+            selectedStatus[checkbox.value] = counts[checkbox.value];
         }
     }
 
@@ -138,13 +127,5 @@ function updateChart() {
     arc.append('path')
         .attr('d', path)
         .attr('fill', d => color(d.data[0]))
-    //Add labels to the chart that shows value
-
-    arc.append("text")
-        .attr("transform", function (d) {
-            return "translate(" + label.centroid(d) + ")";
-        })
-        .text(function (d) { return d.data[1] })
 
 }
-
