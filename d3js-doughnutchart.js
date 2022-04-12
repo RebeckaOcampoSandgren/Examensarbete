@@ -7,111 +7,116 @@ const width = 550;
 const height = 550;
 const radius = Math.min(width, height) / 2.5;
 
-$(document).on("click", "#render", function () {
-    d3.json("logfile1.json")
-        .then(function (jsondata) {
-            djson = jsondata.map(function (e) {
-                return e.status;
-            });
+fetch("logfile1.json")
+    .then((response) => {
+        return response.json();
+    })
+    .then((datafetch) => {
+        //Generate array with status codes from log file
+        let statuses = datafetch;
+        datajson = statuses.map(function (e) {
+            return e.status;
+        });
 
-            //Count occurrence of status codes in data and add status to object with occurrence as value and status class as key
-            for (let i = 0; i < statusArr.length; i++) {
-                for (const num of djson) {
-                    //check if status code matches regex to decide status class
-                    if (statusArr[i].test(String(num))) {
-                        data[statusLabel[i]] = data[statusLabel[i]] ? data[statusLabel[i]] + 1 : 1;
-                    } else {
-                        continue;
-                    }
+        //Count occurrence of status codes in data and add status to object with occurrence as value and status class as key
+        for (let i = 0; i < statusArr.length; i++) {
+            for (const num of datajson) {
+                //check if status code matches regex to decide status class
+                if (statusArr[i].test(String(num))) {
+                    counts[statusLabel[i]] = counts[statusLabel[i]] ? counts[statusLabel[i]] + 1 : 1;
+                } else {
+                    continue;
                 }
             }
+        }
+    })
 
-            //Setting color scale
-            color = d3.scaleOrdinal()
-                .range(['blue', 'red', 'orange', 'green', 'purple',])
+$(document).on("click", "#render", function () {
+    //Setting color scale
+    color = d3.scaleOrdinal()
+        .range(['blue', 'red', 'orange', 'green', 'purple',])
 
-            //Append svg to the div with id #myChart
-            svg = d3.select("#myChart")
-                .append("svg")
-                .attr("width", width)
-                .attr("height", height)
-                .append("g")
-                .attr("transform", `translate(${width / 2},${height / 2})`);
+    //Append svg to the div with id #myChart
+    svg = d3.select("#myChart")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", `translate(${width / 2},${height / 2})`);
 
-            //calculate position of each group on the donut chart
-            pie = d3.pie().value(d => d[1])
+    //calculate position of each group on the donut chart
+    pie = d3.pie().value(d => d[1])
 
-            let data_ready = pie(Object.entries(data))
+    let data_ready = pie(Object.entries(counts))
 
-            //Build the donut chart
-            arc = svg.selectAll('arc')
-                .data(data_ready)
-                .enter()
+    //Build the donut chart
+    arc = svg.selectAll('arc')
+        .data(data_ready)
+        .enter()
 
-            path = d3.arc()
-                .outerRadius(radius)
-                .innerRadius(90)
+    path = d3.arc()
+        .outerRadius(radius)
+        .innerRadius(90)
 
-            arc.append('path')
-                .attr('d', path)
-                .attr('fill', d => color(d.data[0]))
+    arc.append('path')
+        .attr('d', path)
+        .attr('fill', d => color(d.data[0]))
 
-            //Add labels to the chart that shows value
-            label = d3.arc()
-                .outerRadius(radius)
-                .innerRadius(radius - 80);
+    //Add labels to the chart that shows value
+    label = d3.arc()
+        .outerRadius(radius)
+        .innerRadius(radius - 80);
 
-            arc.append("text")
-                .attr("transform", function (d) {
-                    return "translate(" + label.centroid(d) + ")";
-                })
-                .text(function (d) { return d.data[1] })
+    arc.append("text")
+        .attr("transform", function (d) {
+            return "translate(" + label.centroid(d) + ")";
+        })
+        .text(function (d) { return d.data[1] })
 
-            //Append svg to div with id #myLegend
-            var svgLegend = d3.select("#myLegend").append("svg")
-                .attr("width", 600)
-                .attr("height", 25)
+    //Append svg to div with id #myLegend
+    var svgLegend = d3.select("#myLegend").append("svg")
+        .attr("width", 600)
+        .attr("height", 25)
 
-            var dataL = 0;
-            var offset = 100;
+    var dataL = 0;
+    var offset = 100;
 
-            //Create legends to each key in the data array
-            var legend = svgLegend.selectAll('.legends')
-                .data(Object.keys(data))
-                .enter().append('g')
-                .attr("class", "legends")
-                .attr("transform", function (d, i) {
-                    if (i === 0) {
-                        dataL = d.length + offset
-                        return "translate(0,0)"
-                    } else {
-                        var newdataL = dataL
-                        dataL += d.length + offset
-                        return "translate(" + (newdataL) + ",0)"
-                    }
-                })
+    //Create legends to each key in the data array
+    var legend = svgLegend.selectAll('.legends')
+        .data(Object.keys(counts))
+        .enter().append('g')
+        .attr("class", "legends")
+        .attr("transform", function (d, i) {
+            if (i === 0) {
+                dataL = d.length + offset
+                return "translate(0,0)"
+            } else {
+                var newdataL = dataL
+                dataL += d.length + offset
+                return "translate(" + (newdataL) + ",0)"
+            }
+        })
 
-            //Create the shapes for the legend
-            legend.append('rect')
-                .attr("x", 0)
-                .attr("y", 10)
-                .attr("width", 20)
-                .attr("height", 10)
-                .style("fill", function (d, i) {
-                    return color(i)
-                })
-            //Text for the legend
-            legend.append('text')
-                .attr("x", 25)
-                .attr("y", 20)
-                .text(function (d, i) {
-                    return d
-                })
-                .attr("class", "textselected")
-                .style("text-anchor", "start")
-                .style("font-size", 12)
+    //Create the shapes for the legend
+    legend.append('rect')
+        .attr("x", 0)
+        .attr("y", 10)
+        .attr("width", 20)
+        .attr("height", 10)
+        .style("fill", function (d, i) {
+            return color(i)
+        })
+    //Text for the legend
+    legend.append('text')
+        .attr("x", 25)
+        .attr("y", 20)
+        .text(function (d, i) {
+            return d
+        })
+        .attr("class", "textselected")
+        .style("text-anchor", "start")
+        .style("font-size", 12)
 
-        });
 });
 
 //Update chart when filter button is pressed

@@ -1,8 +1,8 @@
 let statusArr = [/^1/, /^2/, /^3/, /^4/, /^5/];
 let statusLabel = ["Informational", "Successful", "Redirectional", "Client Error", "Server Error"];
 let counts = {};
-var filterbtn = document.getElementById('filter');
 let chart, datajson;
+
 //set options for chart
 let options = {
     title: 'HTTP Status Distribution',
@@ -13,24 +13,24 @@ let options = {
     legend: { position: 'top' },
 };
 
-//Set a callback to run when user clicks on render button
-$(document).on("click", "#render", function () {
-    // Load the Visualization API and the piechart package.
-    google.charts.load("current", { packages: ["corechart"] });
-    google.charts.setOnLoadCallback(drawChart());
-});
+// Load the Visualization API and the piechart package.
+google.charts.load("current", { packages: ["corechart"] });
 
-
-function drawChart() {
-    $.getJSON("logfile1.json", function (json) {
-        //Generate array with https methods from log file
-        datajson = json.map(function (e) {
+fetch("logfile1.json")
+    .then((response) => {
+        return response.json();
+    })
+    .then((datafetch) => {
+        //Generate array with status codes from log file
+        let statuses = datafetch;
+        datajson = statuses.map(function (e) {
             return e.status;
         });
 
         //Count occurrence of status codes in data and add status to object with occurrence as value and status class as key
         for (let i = 0; i < statusArr.length; i++) {
             for (const num of datajson) {
+                //check if status code matches regex to decide status class
                 if (statusArr[i].test(String(num))) {
                     counts[statusLabel[i]] = counts[statusLabel[i]] ? counts[statusLabel[i]] + 1 : 1;
                 } else {
@@ -38,6 +38,10 @@ function drawChart() {
                 }
             }
         }
+    })
+
+$(document).ready(function () {
+    $("#render").on("click", function () {
         //Create data table
         let data = new google.visualization.DataTable();
         data.addColumn('string', 'statusclass');
@@ -46,9 +50,9 @@ function drawChart() {
 
         chart = new google.visualization.PieChart(document.getElementById('donutchart'));
         chart.draw(data, options);
-    });
 
-}
+    });
+});
 
 //Get input from checkboxes and update chart with chosen status classes
 function updateChart() {
