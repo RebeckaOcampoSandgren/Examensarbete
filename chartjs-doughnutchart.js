@@ -29,6 +29,8 @@ fetch("logfile1.json")
     })
 
 $(document).on("click", "#render", function () {
+    //Save the starttime for rendering time to local storage
+    localStorage.setItem('startTime', new Date().getTime());
 
     var data = {
         labels: Object.keys(counts),
@@ -59,10 +61,14 @@ $(document).on("click", "#render", function () {
         options: options,
         data: data
     });
+    //Save stoptime + total rendering time for initial rendering to local storage
+    localStorage.setItem('stopTime', new Date().getTime());
+    localStorage.setItem('renderTime', (localStorage.getItem('stopTime') - localStorage.getItem('startTime')));
 });
 
 //Get input from checkboxes and update chart with chosen status
 function updateChart() {
+    console.log("tjaaa");
     let selectedStatus = {};
     let checkboxes = document.getElementsByClassName('statusCheckbox');
 

@@ -42,6 +42,8 @@ fetch("logfile1.json")
 
 $(document).ready(function () {
     $("#render").on("click", function () {
+        //Save the starttime for rendering time to local storage
+        localStorage.setItem('startTime', new Date().getTime());
         //Create data table
         let data = new google.visualization.DataTable();
         data.addColumn('string', 'statusclass');
@@ -50,6 +52,10 @@ $(document).ready(function () {
 
         chart = new google.visualization.PieChart(document.getElementById('donutchart'));
         chart.draw(data, options);
+
+        //Save stoptime + total rendering time for initial rendering to local storage
+        localStorage.setItem('stopTime', new Date().getTime());
+        localStorage.setItem('renderTime', (localStorage.getItem('stopTime') - localStorage.getItem('startTime')));
 
     });
 });

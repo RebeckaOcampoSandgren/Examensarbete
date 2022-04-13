@@ -31,6 +31,8 @@ fetch("logfile1.json")
     })
 
 $(document).on("click", "#render", function () {
+    //Save the starttime for rendering time to local storage
+    localStorage.setItem('startTime', new Date().getTime());
     //Setting color scale
     color = d3.scaleOrdinal()
         .range(['blue', 'red', 'orange', 'green', 'purple',])
@@ -105,6 +107,10 @@ $(document).on("click", "#render", function () {
         .attr("class", "textselected")
         .style("text-anchor", "start")
         .style("font-size", 12)
+
+    //Save stoptime + total rendering time for initial rendering to local storage
+    localStorage.setItem('stopTime', new Date().getTime());
+    localStorage.setItem('renderTime', (localStorage.getItem('stopTime') - localStorage.getItem('startTime')));
 
 });
 
