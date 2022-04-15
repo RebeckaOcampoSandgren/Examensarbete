@@ -42,8 +42,8 @@ fetch("logfile1.json")
 
 $(document).ready(function () {
     $("#render").on("click", function () {
-        //Save the starttime for rendering time to local storage
-        localStorage.setItem('startTime', new Date().getTime());
+        //Save the start time for rendering time to local storage
+        localStorage.setItem('start', new Date().getTime());
         //Create data table
         let data = new google.visualization.DataTable();
         data.addColumn('string', 'statusclass');
@@ -53,15 +53,16 @@ $(document).ready(function () {
         chart = new google.visualization.PieChart(document.getElementById('donutchart'));
         chart.draw(data, options);
 
-        //Save stoptime + total rendering time for initial rendering to local storage
-        localStorage.setItem('stopTime', new Date().getTime());
-        localStorage.setItem('renderTime', (localStorage.getItem('stopTime') - localStorage.getItem('startTime')));
-
+        //Save stop time + total rendering time for initial rendering to local storage
+        localStorage.setItem('stop', new Date().getTime());
+        localStorage.setItem('renderTime', (localStorage.getItem('stop') - localStorage.getItem('start')));
     });
 });
 
 //Get input from checkboxes and update chart with chosen status classes
 function updateChart() {
+    //Save the start time for rendering time to local storage
+    //localStorage.setItem('start', new Date().getTime());
     let selectedStatus = {};
     let checkboxes = document.getElementsByClassName('statusCheckbox');
 
@@ -76,4 +77,8 @@ function updateChart() {
     updateData.addColumn('number', 'count');
     updateData.addRows(Object.entries(selectedStatus));
     chart.draw(updateData, options);
+
+    //Save stop time + total rendering time for interactive rendering to local storage
+    //localStorage.setItem('stop', new Date().getTime());
+    //localStorage.setItem('renderTime', (localStorage.getItem('stop') - localStorage.getItem('start')));
 }

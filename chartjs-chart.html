@@ -7,11 +7,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script>
 </head>
 
 <body>
-    <button id="render">Render Chart</button>
+    <button id="render" class="render">Render Chart</button>
     <div id="filterChart">
         <input type="checkbox" class="statusCheckbox" id="statusInfo" name="statusInfo" value="Informational">
         <label for="statusInfo"> Informational</label>
@@ -24,7 +23,7 @@
         <input type="checkbox" class="statusCheckbox" id="statusServer" name="statusServer" value="Server Error">
         <label for="statusServer"> Server Error</label>
         <div>
-            <button onclick="updateChart()">Filter</button>
+            <button id="updatebtn" onclick="updateChart()">Filter</button>
         </div>
     </div>
     <div>
