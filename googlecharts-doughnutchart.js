@@ -42,8 +42,8 @@ fetch("logfile1.json")
 
 $(document).ready(function () {
     $("#render").on("click", function () {
-        //Save the start time for rendering time to local storage
-        localStorage.setItem('start', new Date().getTime());
+        //Save the start time for initial rendering time to local storage
+        //localStorage.setItem('start', performance.now());
         //Create data table
         let data = new google.visualization.DataTable();
         data.addColumn('string', 'statusclass');
@@ -54,15 +54,15 @@ $(document).ready(function () {
         chart.draw(data, options);
 
         //Save stop time + total rendering time for initial rendering to local storage
-        localStorage.setItem('stop', new Date().getTime());
-        localStorage.setItem('renderTime', (localStorage.getItem('stop') - localStorage.getItem('start')));
+        //localStorage.setItem('stop', performance.now());
+        //localStorage.setItem('renderTime', (localStorage.getItem('stop') - localStorage.getItem('start')).toFixed(2));
     });
 });
 
 //Get input from checkboxes and update chart with chosen status classes
 function updateChart() {
     //Save the start time for rendering time to local storage
-    //localStorage.setItem('start', new Date().getTime());
+    localStorage.setItem('start', performance.now());
     let selectedStatus = {};
     let checkboxes = document.getElementsByClassName('statusCheckbox');
 
@@ -79,6 +79,6 @@ function updateChart() {
     chart.draw(updateData, options);
 
     //Save stop time + total rendering time for interactive rendering to local storage
-    //localStorage.setItem('stop', new Date().getTime());
-    //localStorage.setItem('renderTime', (localStorage.getItem('stop') - localStorage.getItem('start')));
+    localStorage.setItem('stop', performance.now());
+    localStorage.setItem('renderTime', (localStorage.getItem('stop') - localStorage.getItem('start')).toFixed(2));
 }

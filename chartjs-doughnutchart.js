@@ -29,8 +29,8 @@ fetch("logfile1.json")
     })
 
 $(document).on("click", "#render", function () {
-    //Save the starttime for rendering time to local storage
-    localStorage.setItem('start', new Date().getTime());
+    //Save the start time for initial rendering time to local storage
+    //localStorage.setItem('start', performance.now());
 
     var data = {
         labels: Object.keys(counts),
@@ -61,15 +61,15 @@ $(document).on("click", "#render", function () {
         options: options,
         data: data
     });
-    //Save stoptime + total rendering time for initial rendering to local storage
-    localStorage.setItem('stop', new Date().getTime());
-    localStorage.setItem('renderTime', (localStorage.getItem('stop') - localStorage.getItem('start')));
+    //Save stop time + total rendering time for initial rendering to local storage
+    //localStorage.setItem('stop', performance.now());
+    //localStorage.setItem('renderTime', (localStorage.getItem('stop') - localStorage.getItem('start')).toFixed(2));
 });
 
 //Get input from checkboxes and update chart with chosen status
 function updateChart() {
     //Save the start time for rendering time to local storage
-    //localStorage.setItem('start', new Date().getTime());
+    localStorage.setItem('start', performance.now());
     let selectedStatus = {};
     let checkboxes = document.getElementsByClassName('statusCheckbox');
 
@@ -82,7 +82,8 @@ function updateChart() {
     chart.data.labels = Object.keys(selectedStatus);
     chart.data.datasets[0].data = Object.values(selectedStatus);
     chart.update();
+
     //Save stop time + total rendering time for interactive rendering to local storage
-    //localStorage.setItem('stop', new Date().getTime());
-    //localStorage.setItem('renderTime', (localStorage.getItem('stop') - localStorage.getItem('start')));
+    localStorage.setItem('stop', performance.now());
+    localStorage.setItem('renderTime', (localStorage.getItem('stop') - localStorage.getItem('start')).toFixed(2));
 }

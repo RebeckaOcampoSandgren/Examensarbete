@@ -32,7 +32,7 @@ fetch("logfile1.json")
 
 $(document).on("click", "#render", function () {
     //Save the start time for initial rendering time to local storage
-    localStorage.setItem('start', new Date().getTime());
+    //localStorage.setItem('start', performance.now());
     //Setting color scale
     color = d3.scaleOrdinal()
         .range(['blue', 'red', 'orange', 'green', 'purple',])
@@ -109,14 +109,14 @@ $(document).on("click", "#render", function () {
         .style("font-size", 12)
 
     //Save stop time + total rendering time for initial rendering to local storage
-    localStorage.setItem('stop', new Date().getTime());
-    localStorage.setItem('renderTime', (localStorage.getItem('stop') - localStorage.getItem('start')));
+    //localStorage.setItem('stop', performance.now());
+    //localStorage.setItem('renderTime', (localStorage.getItem('stop') - localStorage.getItem('start')).toFixed(2));
 });
 
 //Update chart when filter button is pressed
 function updateChart() {
     //Save the start time for rendering time to local storage
-    //localStorage.setItem('start', new Date().getTime());
+    localStorage.setItem('start', performance.now());
     let selectedStatus = {};
     let checkboxes = document.getElementsByClassName('statusCheckbox');
 
@@ -136,6 +136,6 @@ function updateChart() {
         .attr('fill', d => color(d.data[0]))
 
     //Save stop time + total rendering time for interactive rendering to local storage
-    //localStorage.setItem('stop', new Date().getTime());
-    //localStorage.setItem('renderTime', (localStorage.getItem('stop') - localStorage.getItem('start')));
+    localStorage.setItem('stop', performance.now());
+    localStorage.setItem('renderTime', (localStorage.getItem('stop') - localStorage.getItem('start')).toFixed(2));
 }
