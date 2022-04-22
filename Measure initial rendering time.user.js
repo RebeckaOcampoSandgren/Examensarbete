@@ -3,11 +3,11 @@
 // @run-at document-end
 // @version      0.1
 // @author       You
-// @include     http://localhost/googlecharts/*
+// @include      http://localhost/googlecharts/*
 // @grant        none
 // ==/UserScript==
 
-var iterations = 10;
+var iterations = 100;
 var count = localStorage.getItem('count');
 
 (function() {
@@ -25,7 +25,7 @@ var count = localStorage.getItem('count');
             }else{
                 str = localStorage.getItem('theData');
             }
-            str+=",\n"+localStorage.getItem('renderTime');
+            str+="\n"+localStorage.getItem('renderTime');
             count++;
             localStorage.setItem('count' , count);
             localStorage.setItem("theData",str);
@@ -34,10 +34,10 @@ var count = localStorage.getItem('count');
     }else{
         var anchor = document.createElement("a");
         var theData = localStorage.getItem('theData');
-        var data = new Blob([theData], {type: 'text/csv;charset=utf-8;'});
+        var data = new Blob([theData], {type: 'text/plain'});
         var url = URL.createObjectURL(data);
         anchor.setAttribute("href", url);
-        anchor.setAttribute("download", "my_data.csv");
+        anchor.setAttribute("download", "googlecharts_initialtest");
         anchor.innerHTML= "Click Here to download";
         document.body.appendChild(anchor);
         anchor.click();

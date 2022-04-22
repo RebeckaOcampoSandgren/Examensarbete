@@ -4,13 +4,13 @@
 // @version      0.1
 // @require       https://chancejs.com/chance.min.js
 // @description  Get the rendering times in ms for updating the chart
-// @include     http://localhost/chartjs/*
+// @include     http://localhost/googlecharts/*
 // @author       You
 // @grant        none
 // ==/UserScript==
 
 let checkboxes = document.getElementsByClassName('statusCheckbox');
-let iterations = 40;
+let iterations = 100;
 let count = localStorage.getItem('count');
 //using chance.js with seed for randomizing bool true/false
 var chance1 = new Chance(1 + count);
@@ -41,7 +41,7 @@ var chance1 = new Chance(1 + count);
             else{
                 str = localStorage.getItem('theData');
             }
-            str+=",\n"+localStorage.getItem('renderTime');
+            str+="\n"+localStorage.getItem('renderTime');
             count++;
             localStorage.setItem('count' , count);
             localStorage.setItem("theData",str);
@@ -50,10 +50,10 @@ var chance1 = new Chance(1 + count);
     }else{
         var anchor = document.createElement("a");
         var theData = localStorage.getItem('theData');
-        var data = new Blob([theData], {type: 'text/csv;charset=utf-8;'});
+        var data = new Blob([theData], {type: 'text/plain'});
         var url = URL.createObjectURL(data);
         anchor.setAttribute("href", url);
-        anchor.setAttribute("download", "my_data.csv");
+        anchor.setAttribute("download", "interactive_googlecharts");
         anchor.innerHTML= "Click Here to download";
         document.body.appendChild(anchor);
         anchor.click();
