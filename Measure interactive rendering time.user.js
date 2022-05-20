@@ -2,15 +2,16 @@
 // @name         Measure interactive rendering time
 // @namespace    http://tampermonkey.net/
 // @version      0.1
-// @require       https://chancejs.com/chance.min.js
+// @require      http://code.jquery.com/jquery-3.4.1.min.js
+// @require      https://chancejs.com/chance.min.js
 // @description  Get the rendering times in ms for updating the chart
-// @include     http://localhost/googlecharts/*
+// @include      http://localhost/chartjs/*
 // @author       You
 // @grant        none
 // ==/UserScript==
 
 let checkboxes = document.getElementsByClassName('statusCheckbox');
-let iterations = 100;
+let iterations = 1000;
 let count = localStorage.getItem('count');
 //using chance.js with seed for randomizing bool true/false
 var chance1 = new Chance(1 + count);
@@ -32,6 +33,10 @@ var chance1 = new Chance(1 + count);
                     checkboxes[i].checked = true;
                 }
             }
+            //if none of the checkboxes are checked then check one
+            if(!$(".statusCheckbox").is(":checked")) {
+                checkboxes[0].checked = true;
+            }
 
             document.getElementById("updatebtn").click();
 
@@ -50,10 +55,10 @@ var chance1 = new Chance(1 + count);
     }else{
         var anchor = document.createElement("a");
         var theData = localStorage.getItem('theData');
-        var data = new Blob([theData], {type: 'text/plain'});
+        var data = new Blob([theData], {type: "text/plain;charset=utf8"});
         var url = URL.createObjectURL(data);
         anchor.setAttribute("href", url);
-        anchor.setAttribute("download", "interactive_googlecharts");
+        anchor.setAttribute("download", "interactive_chartjs_withprocessing_real");
         anchor.innerHTML= "Click Here to download";
         document.body.appendChild(anchor);
         anchor.click();
